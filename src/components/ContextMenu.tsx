@@ -1,6 +1,7 @@
 import React from "react";
-import { Popover } from "./Popover";
 import { render, unmountComponentAtNode } from "react-dom";
+import clsx from "clsx";
+import { Popover } from "./Popover";
 
 import "./ContextMenu.scss";
 
@@ -16,31 +17,39 @@ type Props = {
   left: number;
 };
 
-const ContextMenu = ({ options, onCloseRequest, top, left }: Props) => (
-  <Popover
-    onCloseRequest={onCloseRequest}
-    top={top}
-    left={left}
-    fitInViewport={true}
-  >
-    <ul
-      className="context-menu"
-      onContextMenu={(event) => event.preventDefault()}
-    >
-      {options.map((option, idx) => (
-        <li key={idx} onClick={onCloseRequest}>
-          <ContextMenuOption {...option} />
-        </li>
-      ))}
-    </ul>
-  </Popover>
-);
+const ContextMenu = ({ options, onCloseRequest, top, left }: Props) => {
+  const isDarkTheme = !!document
+    .querySelector(".excalidraw")
+    ?.classList.contains("Appearance_dark");
 
-const ContextMenuOption = ({ label, action }: ContextMenuOption) => (
-  <button className="context-menu-option" onClick={action}>
-    {label}
-  </button>
-);
+  return (
+    <div
+      className={clsx("excalidraw", {
+        "Appearance_dark Appearance_dark-background-none": isDarkTheme,
+      })}
+    >
+      <Popover
+        onCloseRequest={onCloseRequest}
+        top={top}
+        left={left}
+        fitInViewport={true}
+      >
+        <ul
+          className="context-menu"
+          onContextMenu={(event) => event.preventDefault()}
+        >
+          {options.map(({ action, label }, idx) => (
+            <li key={idx} onClick={onCloseRequest}>
+              <button className="context-menu-option" onClick={action}>
+                {label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Popover>
+    </div>
+  );
+};
 
 let contextMenuNode: HTMLDivElement;
 const getContextMenuNode = (): HTMLDivElement => {

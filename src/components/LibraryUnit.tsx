@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import clsx from "clsx";
 import { exportToSvg } from "../scene/export";
 import { close } from "../components/icons";
 
@@ -6,11 +7,15 @@ import "./LibraryUnit.scss";
 import { t } from "../i18n";
 import useIsMobile from "../is-mobile";
 import { LibraryItem } from "../types";
+import { MIME_TYPES } from "../constants";
 
 // fa-plus
 const PLUS_ICON = (
   <svg viewBox="0 0 1792 1792">
-    <path d="M1600 736v192q0 40-28 68t-68 28h-416v416q0 40-28 68t-68 28h-192q-40 0-68-28t-28-68v-416h-416q-40 0-68-28t-28-68v-192q0-40 28-68t68-28h416v-416q0-40 28-68t68-28h192q40 0 68 28t28 68v416h416q40 0 68 28t28 68z" />
+    <path
+      fill="currentColor"
+      d="M1600 736v192q0 40-28 68t-68 28h-416v416q0 40-28 68t-68 28h-192q-40 0-68-28t-28-68v-416h-416q-40 0-68-28t-28-68v-192q0-40 28-68t68-28h416v-416q0-40 28-68t68-28h192q40 0 68 28t28 68v416h416q40 0 68 28t28 68z"
+    />
   </svg>
 );
 
@@ -59,23 +64,23 @@ export const LibraryUnit = ({
 
   return (
     <div
-      className={`library-unit ${
-        elements || pendingElements ? "library-unit__active" : ""
-      }`}
+      className={clsx("library-unit", {
+        "library-unit__active": elements || pendingElements,
+      })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`library-unit__dragger ${
-          !!pendingElements ? "library-unit__pulse" : ""
-        }`}
+        className={clsx("library-unit__dragger", {
+          "library-unit__pulse": !!pendingElements,
+        })}
         ref={ref}
         draggable={!!elements}
         onClick={!!elements || !!pendingElements ? onClick : undefined}
         onDragStart={(event) => {
           setIsHovered(false);
           event.dataTransfer.setData(
-            "application/vnd.excalidrawlib+json",
+            MIME_TYPES.excalidrawlib,
             JSON.stringify(elements),
           );
         }}

@@ -4,7 +4,7 @@ import { InitializeApp } from "./components/InitializeApp";
 import App from "./components/App";
 
 import "../public/fonts.css";
-import "../public/app.css";
+import "./css/app.scss";
 import "./css/styles.scss";
 
 import { ExcalidrawProps } from "./types";
@@ -14,12 +14,12 @@ const Excalidraw = (props: ExcalidrawProps) => {
     width,
     height,
     onChange,
-    onBlur,
     initialData,
     user,
     onUsernameChange,
     options,
   } = props;
+
   useEffect(() => {
     const handleTouchMove = (event: TouchEvent) => {
       // @ts-ignore
@@ -32,7 +32,7 @@ const Excalidraw = (props: ExcalidrawProps) => {
 
     return () => {
       // @ts-ignore
-      document.removeEventListener("touchMove", handleTouchMove);
+      document.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
@@ -42,7 +42,6 @@ const Excalidraw = (props: ExcalidrawProps) => {
         width={width}
         height={height}
         onChange={onChange}
-        onBlur={onBlur}
         initialData={initialData}
         user={user}
         onUsernameChange={onUsernameChange}

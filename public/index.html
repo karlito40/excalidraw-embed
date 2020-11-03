@@ -13,12 +13,6 @@
 
     <meta name="theme-color" content="#000" />
 
-    <!-- Origin Trial token for the Native File System API v2 https://developers.chrome.com/origintrials/#/view_trial/4019462667428167681 (Chrome 83–85) -->
-    <meta
-      http-equiv="origin-trial"
-      content="AvfZfAVFy0dEFl79Rsh7nRqV798Nsf1ulzXRLKGeLJ+bfEUZEPxKAesEcQI3kiN++7TKvQ4uN5LJnFANVU+wKwMAAABZeyJvcmlnaW4iOiJodHRwczovL2V4Y2FsaWRyYXcuY29tOjQ0MyIsImZlYXR1cmUiOiJOYXRpdmVGaWxlU3lzdGVtMiIsImV4cGlyeSI6MTU5NzI0NTM5M30="
-    />
-
     <!-- General tags -->
     <meta
       name="description"
@@ -60,8 +54,6 @@
     <!-- OG tags require absolute url for images -->
     <meta name="twitter:image" content="https://excalidraw.com/og-image.png" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="fonts.css" type="text/css" />
-    <link rel="stylesheet" href="app.css" type="text/css" />
 
     <link
       rel="preload"
@@ -87,21 +79,10 @@
     <link
       rel="manifest"
       href="manifest.json"
-      style="--pwacompat-splash-font: 24px Virgil;"
+      style="--pwacompat-splash-font: 24px Virgil"
     />
-    <style>
-      body {
-        margin: 0;
-        --ui-font: system-ui, BlinkMacSystemFont, -apple-system, Segoe UI,
-          Roboto, Helvetica, Arial, sans-serif;
-        font-family: var(--ui-font);
-        color: var(--text-color-primary);
-        -webkit-text-size-adjust: 100%;
-        user-select: none;
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
+
+    <link rel="stylesheet" href="fonts.css" type="text/css" />
     <% if (process.env.REACT_APP_INCLUDE_GTAG === 'true') { %>
     <script
       async
@@ -116,12 +97,54 @@
       gtag("config", "UA-387204-13");
     </script>
     <% } %>
+
+    <!-- FIXME: remove this when we update CRA (fix SW caching) -->
+    <style>
+      body {
+        margin: 0;
+        --ui-font: system-ui, BlinkMacSystemFont, -apple-system, Segoe UI,
+          Roboto, Helvetica, Arial, sans-serif;
+        font-family: var(--ui-font);
+        -webkit-text-size-adjust: 100%;
+        user-select: none;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .visually-hidden {
+        position: absolute !important;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        clip: rect(1px, 1px, 1px, 1px);
+        white-space: nowrap; /* added line */
+      }
+
+      .LoadingMessage {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .LoadingMessage span {
+        background-color: var(--button-gray-1);
+        border-radius: 5px;
+        padding: 0.8em 1.2em;
+        color: var(--popup-text-color);
+        font-size: 1.3em;
+      }
+    </style>
   </head>
 
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
     <header>
       <h1 class="visually-hidden">Excalidraw</h1>
     </header>

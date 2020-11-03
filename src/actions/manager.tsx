@@ -5,6 +5,7 @@ import {
   UpdaterFn,
   ActionFilterFn,
   ActionName,
+  ActionResult,
 } from "./types";
 import { ExcalidrawElement } from "../element/types";
 import { AppState } from "../types";
@@ -13,9 +14,9 @@ import { t } from "../i18n";
 export class ActionManager implements ActionsManagerInterface {
   actions = {} as ActionsManagerInterface["actions"];
 
-  updater: UpdaterFn;
+  updater: (actionResult: ActionResult | Promise<ActionResult>) => void;
 
-  getAppState: () => AppState;
+  getAppState: () => Readonly<AppState>;
 
   getElementsIncludingDeleted: () => readonly ExcalidrawElement[];
 
@@ -24,7 +25,15 @@ export class ActionManager implements ActionsManagerInterface {
     getAppState: () => AppState,
     getElementsIncludingDeleted: () => readonly ExcalidrawElement[],
   ) {
-    this.updater = updater;
+    this.updater = (actionResult) => {
+      if (actionResult && "then" in actionResult) {
+        actionResult.then((actionResult) => {
+          return updater(actionResult);
+        });
+      } else {
+        return updater(actionResult);
+      }
+    };
     this.getAppState = getAppState;
     this.getElementsIncludingDeleted = getElementsIncludingDeleted;
   }

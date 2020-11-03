@@ -241,7 +241,7 @@ export const isRTL = (text: string) => {
 };
 
 export function tupleToCoors(
-  xyTuple: [number, number],
+  xyTuple: readonly [number, number],
 ): { x: number; y: number } {
   const [x, y] = xyTuple;
   return { x, y };
@@ -253,4 +253,40 @@ export const muteFSAbortError = (error?: Error) => {
     return;
   }
   throw error;
+};
+
+export const findIndex = <T>(
+  array: readonly T[],
+  cb: (element: T, index: number, array: readonly T[]) => boolean,
+  fromIndex: number = 0,
+) => {
+  if (fromIndex < 0) {
+    fromIndex = array.length + fromIndex;
+  }
+  fromIndex = Math.min(array.length, Math.max(fromIndex, 0));
+  let i = fromIndex - 1;
+  while (++i < array.length) {
+    if (cb(array[i], i, array)) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+export const findLastIndex = <T>(
+  array: readonly T[],
+  cb: (element: T, index: number, array: readonly T[]) => boolean,
+  fromIndex: number = array.length - 1,
+) => {
+  if (fromIndex < 0) {
+    fromIndex = array.length + fromIndex;
+  }
+  fromIndex = Math.min(array.length - 1, Math.max(fromIndex, 0));
+  let i = fromIndex + 1;
+  while (--i > -1) {
+    if (cb(array[i], i, array)) {
+      return i;
+    }
+  }
+  return -1;
 };

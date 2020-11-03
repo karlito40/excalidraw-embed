@@ -11,6 +11,7 @@ import { t } from "../i18n";
 import { DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_ALIGN } from "../constants";
 
 export const SVG_EXPORT_TAG = `<!-- svg-source:excalidraw -->`;
+const WATERMARK_HEIGHT = 16;
 
 export const exportToCanvas = (
   elements: readonly NonDeletedExcalidrawElement[],
@@ -28,28 +29,25 @@ export const exportToCanvas = (
     viewBackgroundColor: string;
     shouldAddWatermark: boolean;
   },
-  createCanvas: (width: number, height: number) => any = (width, height) => {
+  createCanvas: (width: number, height: number) => HTMLCanvasElement = (
+    width,
+    height,
+  ) => {
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = width * scale;
     tempCanvas.height = height * scale;
     return tempCanvas;
   },
 ) => {
-  let sceneElements = elements;
-  if (shouldAddWatermark) {
-    const [, , maxX, maxY] = getCommonBounds(elements);
-    sceneElements = [...sceneElements, getWatermarkElement(maxX, maxY)];
-  }
+  const sceneElements = getElementsAndWatermark(elements, shouldAddWatermark);
 
-  // calculate smallest area to fit the contents in
-  const [minX, minY, maxX, maxY] = getCommonBounds(sceneElements);
-  const width = distance(minX, maxX) + exportPadding * 2;
-  const height =
-    distance(minY, maxY) +
-    exportPadding +
-    (shouldAddWatermark ? 0 : exportPadding);
+  const [minX, minY, width, height] = getCanvasSize(
+    sceneElements,
+    exportPadding,
+    shouldAddWatermark,
+  );
 
-  const tempCanvas: any = createCanvas(width, height);
+  const tempCanvas = createCanvas(width, height);
 
   renderScene(
     sceneElements,
@@ -85,36 +83,37 @@ export const exportToSvg = (
     exportBackground,
     exportPadding = 10,
     viewBackgroundColor,
+    scale = 1,
     shouldAddWatermark,
+    metadata = "",
   }: {
     exportBackground: boolean;
     exportPadding?: number;
+    scale?: number;
     viewBackgroundColor: string;
     shouldAddWatermark: boolean;
+    metadata?: string;
   },
 ): SVGSVGElement => {
-  let sceneElements = elements;
-  if (shouldAddWatermark) {
-    const [, , maxX, maxY] = getCommonBounds(elements);
-    sceneElements = [...sceneElements, getWatermarkElement(maxX, maxY)];
-  }
+  const sceneElements = getElementsAndWatermark(elements, shouldAddWatermark);
 
-  // calculate canvas dimensions
-  const [minX, minY, maxX, maxY] = getCommonBounds(sceneElements);
-  const width = distance(minX, maxX) + exportPadding * 2;
-  const height =
-    distance(minY, maxY) +
-    exportPadding +
-    (shouldAddWatermark ? 0 : exportPadding);
+  const [minX, minY, width, height] = getCanvasSize(
+    sceneElements,
+    exportPadding,
+    shouldAddWatermark,
+  );
 
   // initialze SVG root
   const svgRoot = document.createElementNS(SVG_NS, "svg");
   svgRoot.setAttribute("version", "1.1");
   svgRoot.setAttribute("xmlns", SVG_NS);
   svgRoot.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svgRoot.setAttribute("width", `${width * scale}`);
+  svgRoot.setAttribute("height", `${height * scale}`);
 
   svgRoot.innerHTML = `
   ${SVG_EXPORT_TAG}
+  ${metadata}
   <defs>
     <style>
       @font-face {
@@ -129,7 +128,7 @@ export const exportToSvg = (
   </defs>
   `;
 
-  // render backgroiund rect
+  // render background rect
   if (exportBackground && viewBackgroundColor) {
     const rect = svgRoot.ownerDocument!.createElementNS(SVG_NS, "rect");
     rect.setAttribute("x", "0");
@@ -149,15 +148,29 @@ export const exportToSvg = (
   return svgRoot;
 };
 
+const getElementsAndWatermark = (
+  elements: readonly NonDeletedExcalidrawElement[],
+  shouldAddWatermark: boolean,
+): readonly NonDeletedExcalidrawElement[] => {
+  let _elements = [...elements];
+
+  if (shouldAddWatermark) {
+    const [, , maxX, maxY] = getCommonBounds(elements);
+    _elements = [..._elements, getWatermarkElement(maxX, maxY)];
+  }
+
+  return _elements;
+};
+
 const getWatermarkElement = (maxX: number, maxY: number) => {
   return newTextElement({
     text: t("labels.madeWithExcalidraw"),
-    fontSize: 16,
+    fontSize: WATERMARK_HEIGHT,
     fontFamily: DEFAULT_FONT_FAMILY,
     textAlign: "right",
     verticalAlign: DEFAULT_VERTICAL_ALIGN,
     x: maxX,
-    y: maxY + 16,
+    y: maxY + WATERMARK_HEIGHT,
     strokeColor: oc.gray[5],
     backgroundColor: "transparent",
     fillStyle: "hachure",
@@ -165,5 +178,39 @@ const getWatermarkElement = (maxX: number, maxY: number) => {
     strokeStyle: "solid",
     roughness: 1,
     opacity: 100,
+    strokeSharpness: "sharp",
   });
+};
+
+// calculate smallest area to fit the contents in
+const getCanvasSize = (
+  elements: readonly NonDeletedExcalidrawElement[],
+  exportPadding: number,
+  shouldAddWatermark: boolean,
+): [number, number, number, number] => {
+  const [minX, minY, maxX, maxY] = getCommonBounds(elements);
+  const width = distance(minX, maxX) + exportPadding * 2;
+  const height =
+    distance(minY, maxY) +
+    exportPadding +
+    (shouldAddWatermark ? 0 : exportPadding);
+
+  return [minX, minY, width, height];
+};
+
+export const getExportSize = (
+  elements: readonly NonDeletedExcalidrawElement[],
+  exportPadding: number,
+  shouldAddWatermark: boolean,
+  scale: number,
+): [number, number] => {
+  const sceneElements = getElementsAndWatermark(elements, shouldAddWatermark);
+
+  const [, , width, height] = getCanvasSize(
+    sceneElements,
+    exportPadding,
+    shouldAddWatermark,
+  ).map((dimension) => Math.trunc(dimension * scale));
+
+  return [width, height];
 };

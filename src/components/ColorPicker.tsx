@@ -43,6 +43,7 @@ const Picker = ({
   onClose,
   label,
   showInput = true,
+  type,
 }: {
   colors: string[];
   color: string | null;
@@ -50,6 +51,7 @@ const Picker = ({
   onClose: () => void;
   label: string;
   showInput: boolean;
+  type: "canvasBackground" | "elementBackground" | "elementStroke";
 }) => {
   const firstItem = React.useRef<HTMLButtonElement>();
   const activeItem = React.useRef<HTMLButtonElement>();
@@ -63,6 +65,8 @@ const Picker = ({
       activeItem.current.focus();
     } else if (colorInput.current) {
       colorInput.current.focus();
+    } else if (gallery.current) {
+      gallery.current.focus();
     }
   }, []);
 
@@ -123,7 +127,7 @@ const Picker = ({
 
   return (
     <div
-      className="color-picker"
+      className={`color-picker color-picker-type-${type}`}
       role="dialog"
       aria-modal="true"
       aria-label={t("labels.colorPicker")}
@@ -138,6 +142,7 @@ const Picker = ({
             gallery.current = el;
           }
         }}
+        tabIndex={0}
       >
         {colors.map((_color, i) => (
           <button
@@ -290,6 +295,7 @@ export const ColorPicker = ({
               }}
               label={label}
               showInput={false}
+              type={type}
             />
           </Popover>
         ) : null}

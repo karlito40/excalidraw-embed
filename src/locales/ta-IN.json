@@ -25,10 +25,15 @@
     "sloppiness": "",
     "opacity": "",
     "textAlign": "",
+    "edges": "",
+    "sharp": "",
+    "round": "",
     "fontSize": "",
     "fontFamily": "",
     "onlySelected": "",
     "withBackground": "",
+    "exportEmbedScene": "",
+    "exportEmbedScene_details": "",
     "addWatermark": "",
     "handDrawn": "",
     "normal": "",
@@ -68,7 +73,8 @@
     "toggleGridMode": "",
     "addToLibrary": "",
     "removeFromLibrary": "",
-    "libraryLoadingMessage": ""
+    "libraryLoadingMessage": "",
+    "loadingScene": ""
   },
   "buttons": {
     "clearReset": "",
@@ -77,6 +83,7 @@
     "exportToSvg": "",
     "copyToClipboard": "",
     "copyPngToClipboard": "",
+    "scale": "",
     "save": "",
     "saveAs": "",
     "load": "",
@@ -95,19 +102,25 @@
     "roomDialog": "",
     "createNewRoom": "",
     "toggleFullScreen": "",
+    "toggleDarkMode": "",
     "toggleZenMode": "",
     "exitZenMode": ""
   },
   "alerts": {
     "clearReset": "",
     "couldNotCreateShareableLink": "",
+    "couldNotCreateShareableLinkTooBig": "",
     "couldNotLoadInvalidFile": "",
     "importBackendFailed": "",
     "cannotExportEmptyCanvas": "",
     "couldNotCopyToClipboard": "",
     "decryptFailed": "",
     "uploadedSecurly": "",
-    "loadSceneOverridePrompt": ""
+    "loadSceneOverridePrompt": "",
+    "errorLoadingLibrary": "",
+    "confirmAddLibrary": "",
+    "imageDoesNotContainScene": "",
+    "cannotRestoreFromImage": ""
   },
   "toolBar": {
     "selection": "",
@@ -129,6 +142,7 @@
   "hints": {
     "linearElement": "",
     "freeDraw": "",
+    "text": "",
     "linearElementMulti": "",
     "resize": "",
     "rotate": "",
@@ -155,7 +169,6 @@
     "button_startSession": "",
     "button_stopSession": "",
     "desc_inProgressIntro": "",
-    "desc_persistenceWarning": "",
     "desc_shareLink": "",
     "desc_exitSession": ""
   },
@@ -177,7 +190,8 @@
     "github": "",
     "textNewLine": "",
     "textFinish": "",
-    "zoomToFit": ""
+    "zoomToFit": "",
+    "preventBinding": ""
   },
   "encrypted": {
     "tooltip": ""

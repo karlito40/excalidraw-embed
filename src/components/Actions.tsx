@@ -2,7 +2,13 @@ import React from "react";
 import { AppState } from "../types";
 import { ExcalidrawElement } from "../element/types";
 import { ActionManager } from "../actions/manager";
-import { hasBackground, hasStroke, hasText, getTargetElement } from "../scene";
+import {
+  hasBackground,
+  hasStroke,
+  canChangeSharpness,
+  hasText,
+  getTargetElement,
+} from "../scene";
 import { t } from "../i18n";
 import { SHAPES } from "../shapes";
 import { ToolButton } from "./ToolButton";
@@ -50,6 +56,11 @@ export const SelectedShapeActions = ({
         </>
       )}
 
+      {(canChangeSharpness(elementType) ||
+        targetElements.some((element) => canChangeSharpness(element.type))) && (
+        <>{renderAction("changeSharpness")}</>
+      )}
+
       {(hasText(elementType) ||
         targetElements.some((element) => hasText(element.type))) && (
         <>
@@ -72,6 +83,21 @@ export const SelectedShapeActions = ({
           {renderAction("bringForward")}
         </div>
       </fieldset>
+
+      {targetElements.length > 1 && (
+        <fieldset>
+          <legend>{t("labels.align")}</legend>
+          <div className="buttonList">
+            {renderAction("alignLeft")}
+            {renderAction("alignHorizontallyCentered")}
+            {renderAction("alignRight")}
+            {renderAction("alignTop")}
+            {renderAction("alignVerticallyCentered")}
+            {renderAction("alignBottom")}
+          </div>
+        </fieldset>
+      )}
+
       {!isMobile && !isEditing && targetElements.length > 0 && (
         <fieldset>
           <legend>{t("labels.actions")}</legend>
@@ -100,7 +126,7 @@ export const ShapesSwitcher = ({
   isLibraryOpen,
 }: {
   elementType: ExcalidrawElement["type"];
-  setAppState: (appState: Partial<AppState>) => void;
+  setAppState: React.Component<any, AppState>["setState"];
   isLibraryOpen: boolean;
 }) => (
   <>

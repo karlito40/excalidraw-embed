@@ -25,10 +25,15 @@
     "sloppiness": "Estil del traç",
     "opacity": "Opacitat",
     "textAlign": "Alineació del text",
+    "edges": "Vores",
+    "sharp": "Agut",
+    "round": "Arrodonit",
     "fontSize": "Mida de lletra",
     "fontFamily": "Tipus de lletra",
     "onlySelected": "Només seleccionats",
     "withBackground": "Amb fons",
+    "exportEmbedScene": "",
+    "exportEmbedScene_details": "",
     "addWatermark": "Afegir \"Fet amb Excalidraw\"",
     "handDrawn": "Dibuixat a mà",
     "normal": "Normal",
@@ -68,7 +73,8 @@
     "toggleGridMode": "Commutar línies de graella",
     "addToLibrary": "Afegir a la biblioteca",
     "removeFromLibrary": "Eliminar de la biblioteca",
-    "libraryLoadingMessage": "Carregant la biblioteca..."
+    "libraryLoadingMessage": "Carregant la biblioteca...",
+    "loadingScene": "Carregant escena ..."
   },
   "buttons": {
     "clearReset": "Netejar el llenç",
@@ -77,6 +83,7 @@
     "exportToSvg": "Exportar a SNG",
     "copyToClipboard": "Copiar al porta-retalls",
     "copyPngToClipboard": "Copiar PNG al porta-retalls",
+    "scale": "Escala",
     "save": "Desar",
     "saveAs": "Desar com",
     "load": "Carregar",
@@ -95,19 +102,25 @@
     "roomDialog": "Començar col·laboració en directe",
     "createNewRoom": "Crear sala nova",
     "toggleFullScreen": "Commutar pantalla completa",
+    "toggleDarkMode": "Commutar modo fosc",
     "toggleZenMode": "Commutar modo zen",
     "exitZenMode": "Sortir de modo zen"
   },
   "alerts": {
     "clearReset": "Tot el llenç s'esborrarà. Estàs segur?",
     "couldNotCreateShareableLink": "No s'ha pogut crear un enllaç per compartir.",
+    "couldNotCreateShareableLinkTooBig": "",
     "couldNotLoadInvalidFile": "No s'ha pogut carregar un fitxer no vàlid",
     "importBackendFailed": "Importació fallida.",
     "cannotExportEmptyCanvas": "No es pot exportar un llenç buit.",
     "couldNotCopyToClipboard": "No s'ha pogut copiar al porta-retalls. Intentar amb el navegador Google Chrome.",
     "decryptFailed": "No s'ha pogut desencriptar.",
     "uploadedSecurly": "La càrrega s'ha assegurat amb xifratge punta a punta, cosa que significa que el servidor Excalidraw i tercers no poden llegir el contingut.",
-    "loadSceneOverridePrompt": "Si carregas aquest dibuix extern, substituirá el que tens. Vols continuar?"
+    "loadSceneOverridePrompt": "Si carregas aquest dibuix extern, substituirá el que tens. Vols continuar?",
+    "errorLoadingLibrary": "S'ha produït un error en carregar la biblioteca de tercers.",
+    "confirmAddLibrary": "Això afegirà {{numShapes}} forma(es) a la vostra biblioteca. Estàs segur?",
+    "imageDoesNotContainScene": "",
+    "cannotRestoreFromImage": ""
   },
   "toolBar": {
     "selection": "Selecció",
@@ -129,6 +142,7 @@
   "hints": {
     "linearElement": "Fer clic per dibuixar múltiples punts; arrossegar per una sola línea",
     "freeDraw": "Fer clic i arrosegar, deixar anar al punt final",
+    "text": "Consell: també pots afegir text fent doble clic a qualsevol lloc amb l'eina de selecció",
     "linearElementMulti": "Fer clic a l'ultim punt, o polsar Escape o Enter per acabar",
     "resize": "Per restringir les proporcions mentres es canvia la mida, mantenir premut el majúscul (SHIFT); per canviar la mida des del centre, mantenir premut ALT",
     "rotate": "Per restringir els angles mentre gira, mantenir premut el majúscul (SHIFT)",
@@ -155,7 +169,6 @@
     "button_startSession": "Iniciar sessió",
     "button_stopSession": "Aturar sessió",
     "desc_inProgressIntro": "La sessió de col·laboració en directe està en marxa.",
-    "desc_persistenceWarning": "Tingues en compte que les dades de l'escena es comparteixen entre col·laboradors de manera P2P i no es desen al nostre servidor. Així, si tots us desconnecteu, perdreu les dades, tret que els exporteu a un fitxer o a un enllaç per a compartir.",
     "desc_shareLink": "Comparteix aquest enllaç amb qualsevol persona amb qui vulguis col·laborar:",
     "desc_exitSession": "Si aturas la sessió, et desconectarás de la sala, però podrás continuar treballant amb el dibuix localment. Tingues en compte que això no afectarà a altres persones, i encara podran col·laborar en la seva versió."
   },
@@ -177,7 +190,8 @@
     "github": "Has trobat un problema? Enviar-ho",
     "textNewLine": "Afegir línea nova (text)",
     "textFinish": "Acabar d'editar (text)",
-    "zoomToFit": "Zoom per veure tots els elements"
+    "zoomToFit": "Zoom per veure tots els elements",
+    "preventBinding": "Prevenir vinculació de la fletxa"
   },
   "encrypted": {
     "tooltip": "Els vostres dibuixos estan xifrats de punta a punta de manera que els servidors d’Excalidraw no els veuran mai."

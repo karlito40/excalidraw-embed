@@ -14,11 +14,11 @@ export type ActionResult =
 
 type ActionFn = (
   elements: readonly ExcalidrawElement[],
-  appState: AppState,
+  appState: Readonly<AppState>,
   formData: any,
-) => ActionResult;
+) => ActionResult | Promise<ActionResult>;
 
-export type UpdaterFn = (res: ActionResult, commitToHistory?: boolean) => void;
+export type UpdaterFn = (res: ActionResult) => void;
 export type ActionFilterFn = (action: Action) => void;
 
 export type ActionName =
@@ -44,6 +44,7 @@ export type ActionName =
   | "finalize"
   | "changeProjectName"
   | "changeExportBackground"
+  | "changeExportEmbedScene"
   | "changeShouldAddWatermark"
   | "saveScene"
   | "saveAsScene"
@@ -63,7 +64,14 @@ export type ActionName =
   | "group"
   | "ungroup"
   | "goToCollaborator"
-  | "addToLibrary";
+  | "addToLibrary"
+  | "changeSharpness"
+  | "alignTop"
+  | "alignBottom"
+  | "alignLeft"
+  | "alignRight"
+  | "alignVerticallyCentered"
+  | "alignHorizontallyCentered";
 
 export interface Action {
   name: ActionName;

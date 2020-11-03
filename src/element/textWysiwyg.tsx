@@ -77,6 +77,7 @@ export const textWysiwyg = ({
         textAlign: textAlign,
         color: updatedElement.strokeColor,
         opacity: updatedElement.opacity / 100,
+        filter: "var(--appearance-filter)",
       });
     }
   }
@@ -88,6 +89,9 @@ export const textWysiwyg = ({
   editable.dataset.type = "wysiwyg";
   // prevent line wrapping on Safari
   editable.wrap = "off";
+  editable.className = `excalidraw ${
+    appState.appearance === "dark" ? "Appearance_dark" : ""
+  }`;
 
   Object.assign(editable.style, {
     position: "fixed",
@@ -129,6 +133,7 @@ export const textWysiwyg = ({
   };
 
   const stopEvent = (event: Event) => {
+    event.preventDefault();
     event.stopPropagation();
   };
 
@@ -197,7 +202,10 @@ export const textWysiwyg = ({
   //  device keyboard is opened.
   window.addEventListener("resize", updateWysiwygStyle);
   window.addEventListener("pointerdown", onPointerDown);
-  window.addEventListener("wheel", stopEvent, true);
+  window.addEventListener("wheel", stopEvent, {
+    passive: false,
+    capture: true,
+  });
   document.body.appendChild(editable);
   editable.focus();
   editable.select();
